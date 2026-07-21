@@ -52,8 +52,11 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
-        $("[data-test-id='success-notification']").shouldBe(visible, Duration.ofSeconds(15));
-        $("[data-test-id='success-notification'] .notification__title").shouldHave(text("Успешно!"));
+        // Исправлено: проверяем видимость + текст в одной цепочке
+        $("[data-test-id='success-notification']")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .$(".notification__title").shouldHave(text("Успешно!"));
+
         $("[data-test-id='success-notification'] .notification__content")
                 .shouldHave(text("Встреча успешно запланирована на " + meetingDate));
 
@@ -77,9 +80,10 @@ public class DeliveryTest {
         $("[data-test-id='agreement'] .checkbox__box").click();
         $(".button__text").click();
 
-        $("[data-test-id='success-notification']").shouldBe(visible, Duration.ofSeconds(15));
-        $("[data-test-id='success-notification'] .notification__content")
-                .shouldHave(text("Встреча успешно запланирована на " + firstDate));
+        // Исправлено: проверяем видимость + текст
+        $("[data-test-id='success-notification']")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .$(".notification__content").shouldHave(text("Встреча успешно запланирована на " + firstDate));
 
         // Второе планирование с новой датой
         $("[data-test-id='date'] input").sendKeys(Keys.CONTROL + "a");
@@ -87,15 +91,17 @@ public class DeliveryTest {
         $("[data-test-id='date'] input").setValue(secondDate);
         $(".button__text").click();
 
-        $("[data-test-id='replan-notification']").shouldBe(visible, Duration.ofSeconds(15));
-        $("[data-test-id='replan-notification'] .notification__title")
-                .shouldHave(text("Необходимо подтверждение"));
+        // Исправлено: проверяем видимость уведомления о перепланировании
+        $("[data-test-id='replan-notification']")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .$(".notification__title").shouldHave(text("Необходимо подтверждение"));
 
         $("[data-test-id='replan-notification'] .button__text").click();
 
-        $("[data-test-id='success-notification']").shouldBe(visible, Duration.ofSeconds(15));
-        $("[data-test-id='success-notification'] .notification__content")
-                .shouldHave(text("Встреча успешно запланирована на " + secondDate));
+        // Исправлено: проверяем видимость + текст
+        $("[data-test-id='success-notification']")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .$(".notification__content").shouldHave(text("Встреча успешно запланирована на " + secondDate));
 
         $("[data-test-id='replan-notification']").shouldNotBe(visible);
     }
@@ -139,7 +145,6 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
-        // Проверяем, что после повторной отправки появилось уведомление об успехе
         $("[data-test-id='success-notification']").shouldBe(visible, Duration.ofSeconds(15));
     }
 
@@ -162,6 +167,7 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
+        // Исправлено: комбинированный селектор с классом input_invalid
         $("[data-test-id='city'].input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения"));
     }
 
@@ -202,6 +208,7 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
+        // Для даты класс не добавляется, проверяем текст
         $("[data-test-id='date'] .input__sub").shouldHave(text("Неверно введена дата"));
     }
 
@@ -296,6 +303,7 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
+        // Исправлено: проверяем видимость элемента с классом input_invalid
         $("[data-test-id='agreement'].input_invalid").shouldBe(visible);
     }
 

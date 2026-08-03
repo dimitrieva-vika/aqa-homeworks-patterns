@@ -1,6 +1,9 @@
 package ru.netology.delivery.test;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +16,13 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class DeliveryTest {
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(true));
+    }
 
     @BeforeEach
     void setup() {
@@ -52,7 +62,6 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
-        // Исправлено: проверяем видимость + текст в одной цепочке
         $("[data-test-id='success-notification']")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .$(".notification__title").shouldHave(text("Успешно!"));
@@ -70,7 +79,6 @@ public class DeliveryTest {
         var firstDate = DataGenerator.generateDate(4);
         var secondDate = DataGenerator.generateDate(7);
 
-        // Первое планирование
         $("[data-test-id='city'] input").setValue(validUser.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.CONTROL + "a");
         $("[data-test-id='date'] input").sendKeys(Keys.DELETE);
@@ -80,25 +88,21 @@ public class DeliveryTest {
         $("[data-test-id='agreement'] .checkbox__box").click();
         $(".button__text").click();
 
-        // Исправлено: проверяем видимость + текст
         $("[data-test-id='success-notification']")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .$(".notification__content").shouldHave(text("Встреча успешно запланирована на " + firstDate));
 
-        // Второе планирование с новой датой
         $("[data-test-id='date'] input").sendKeys(Keys.CONTROL + "a");
         $("[data-test-id='date'] input").sendKeys(Keys.DELETE);
         $("[data-test-id='date'] input").setValue(secondDate);
         $(".button__text").click();
 
-        // Исправлено: проверяем видимость уведомления о перепланировании
         $("[data-test-id='replan-notification']")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .$(".notification__title").shouldHave(text("Необходимо подтверждение"));
 
         $("[data-test-id='replan-notification'] .button__text").click();
 
-        // Исправлено: проверяем видимость + текст
         $("[data-test-id='success-notification']")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .$(".notification__content").shouldHave(text("Встреча успешно запланирована на " + secondDate));
@@ -114,7 +118,6 @@ public class DeliveryTest {
         var firstDate = DataGenerator.generateDate(4);
         var secondDate = DataGenerator.generateDate(5);
 
-        // Первое планирование
         $("[data-test-id='city'] input").setValue(validUser.getCity());
         $("[data-test-id='date'] input").sendKeys(Keys.CONTROL + "a");
         $("[data-test-id='date'] input").sendKeys(Keys.DELETE);
@@ -126,7 +129,6 @@ public class DeliveryTest {
 
         $("[data-test-id='success-notification']").shouldBe(visible, Duration.ofSeconds(15));
 
-        // Второе планирование с другими данными
         $("[data-test-id='city'] input").sendKeys(Keys.CONTROL + "a");
         $("[data-test-id='city'] input").sendKeys(Keys.DELETE);
         $("[data-test-id='city'] input").setValue(anotherUser.getCity());
@@ -167,7 +169,6 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
-        // Исправлено: комбинированный селектор с классом input_invalid
         $("[data-test-id='city'].input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения"));
     }
 
@@ -208,7 +209,6 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
-        // Для даты класс не добавляется, проверяем текст
         $("[data-test-id='date'] .input__sub").shouldHave(text("Неверно введена дата"));
     }
 
@@ -303,7 +303,6 @@ public class DeliveryTest {
 
         $(".button__text").click();
 
-        // Исправлено: проверяем видимость элемента с классом input_invalid
         $("[data-test-id='agreement'].input_invalid").shouldBe(visible);
     }
 

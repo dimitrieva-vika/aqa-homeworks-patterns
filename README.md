@@ -4,7 +4,7 @@
 
 ## Описание проекта
 
-Автотесты для формы перепланирования встречи с использованием Selenide, Faker и Lombok.
+Автотесты для формы перепланирования встречи с использованием Selenide, Faker, Lombok и Allure.
 
 ## Статус тестирования
 
@@ -32,6 +32,7 @@
 - Selenide 6.19.1
 - Faker 1.0.2
 - Lombok 1.18.36
+- Allure 2.24.0
 - Gradle 8.14.5
 - GitHub Actions (CI)
 
@@ -40,5 +41,37 @@
 ### Локальный запуск
 
 1. Запустите SUT:
-```bash
-java -jar ./artifacts/app-replan-delivery.jar
+   ```bash
+   java -jar ./artifacts/app-replan-delivery.jar
+   ```
+
+2. Запустите тесты:
+   ```bash
+   ./gradlew clean test
+   ```
+
+3. Сгенерируйте Allure отчет:
+   ```bash
+   ./gradlew allureReport
+   ```
+
+4. Откройте Allure отчет:
+   ```bash
+   ./gradlew allureServe
+   ```
+
+
+
+## Скриншоты Allure отчета
+
+### Общий вид
+
+![Allure Overview](screenshots/allure-overview.png)
+
+## Сайты
+
+![Allure Test Details](screenshots/allure-suites.png)
+
+### Графики и статистика
+
+![Allure Graphs](screenshots/allure-graphs.png)
